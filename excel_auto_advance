@@ -1,0 +1,25 @@
+from openpyxl import Workbook
+from win32com.client import Dispatch
+import pandas as pd
+from openpyxl.utils.dataframe import dataframe_to_rows
+
+data = {
+    "Asset_Name":["asse1","asset2"],
+    "Month_1":[13, 20],
+    "Month_2":[31, 45],
+}
+
+df =pd.DataFrame(data)
+workbook = Workbook()
+sheet = workbook.active
+
+for row in dataframe_to_rows(df, index= False, header= False):
+    sheet.append(row)
+
+workbook.save("pandas.xlsx")
+
+x1= Dispatch("Excel.Application")
+x1.Visible = True
+wb = x1.workbooks.open(r'F:\Projects\Python Scripts\pandas.xlsx')
+wb.Close()
+x1.Quit()
